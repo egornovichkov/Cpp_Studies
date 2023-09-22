@@ -1,10 +1,10 @@
 #include <iostream>
 #include <vector>
 
-void insertionSort(std::vector<int> &arr, int n)
+void insertionSort(std::vector<int> &arr)
 {
     int i, j, key;
-    for (i = 1; i < n; i++)
+    for (i = 1; i < arr.size(); i++)
     {
         key = arr[i];
         j = i - 1;
@@ -21,17 +21,18 @@ int main()
 {
     setlocale(LC_ALL, "");
     std::vector<int> arr;
-    int n;
+    int size;
     std::wcout << L"Кол-во элементов ";
-    std::cin >> n;
+    std::cin >> size;
+    arr.reserve(size);
     std::wcout << L"Введите значения в массив" << std::endl;
-    for (int i = 0; i < n; ++i)
+    for (int i = 0; i < size; ++i)
     {
         int tmp_element;
         std::cin >> tmp_element;
         arr.push_back(tmp_element);
     }
-    insertionSort(arr, n);
+    insertionSort(arr);
     for (auto i : arr)
     {
         std::cout << i << " ";

@@ -52,7 +52,7 @@ int main()
             }
         }
     }
-    for (auto i : answer)
+    for (auto const& i : answer)
     {
         std::cout << i << std::endl;
     }
