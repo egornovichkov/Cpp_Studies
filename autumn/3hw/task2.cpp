@@ -69,22 +69,22 @@ int main()
     setlocale(LC_ALL, "");
     vector arr;
     bool mode;
-    int n;
-    int a;
+    int size;
+    int elem;
     std::wcout << L"Введите длину массива ";
-    std::cin >> n;
+    std::cin >> size;
     std::wcout << L"Введите значения в массив\n";
-    for (int i = 0; i < n; ++i)
+    for (int i = 0; i < size; ++i)
     {
-        std::cin >> a;
-        arr.push_back(a);
+        std::cin >> elem;
+        arr.push_back(elem);
     }
     std::wcout << L"Введите режим сортировки: 0 - по возрастанию, 1 - по убыванию\n";
     std::cin >> mode;
     for (auto &j : arr)
         std::cout << j << " ";
     std::cout << "\n";
-    merge_sort(arr, 0, n - 1, mode);
+    merge_sort(arr, 0, size - 1, mode);
     for (auto &j : arr)
         std::cout << j << " ";
     return 0;
