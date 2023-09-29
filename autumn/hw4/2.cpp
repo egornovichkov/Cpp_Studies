@@ -67,6 +67,7 @@ struct Customer
 // struct Customer. Forward declaration структуры Customer, который я использую эту проблему не решает, но зато все остальное работает нормально.
 void Product::print()
 {
+    double income = 0;
     std::cout << "----------------------------";
     std::cout << "\nName: " << m_name;
     std::cout << "\nPrice: " << m_price;
@@ -78,9 +79,11 @@ void Product::print()
             if (m_arr_customers[j]->m_arr_products[i]->m_name == this->m_name)
             {
                 std::cout << m_arr_customers[j]->m_arr_quantity[i] << "x by " << m_arr_customers[j]->m_name << " ";
+                income += m_price*m_arr_customers[j]->m_arr_quantity[i];
             }
         }
     }
+    std::cout << "\nIncome: " << income;
     std::cout << "\n----------------------------\n";
 }
 
@@ -126,8 +129,9 @@ int main()
     std::cout << "Now you can add products to customers (Input q to exit)\n";
     std::string name;
     std::vector<Product *> temp_products;
-    std::vector<int> temp_quantity(products_num, 0);
+    std::vector<int> temp_quantity;
     temp_products.reserve(products_num);
+    temp_quantity.reserve(products_num);
     while (name != "q")
     {
         std::cout << "Input customer's name: ";
@@ -140,42 +144,29 @@ int main()
             if ((arr_customers[i]->m_name) == name)
                 customer_index = i;
         }
-        std::cout << "Now input products in format \"1Milk,2Eggs,1Bacon\" (Remember, no more than 9 products for one hands!): ";
-        std::string goods;
-        std::cin >> goods;
-        std::string good;
-        int quantity;
-        for (char symb : goods)
+        std::cout << "Input number of bought products: ";
+        size_t goods_num;
+        std::cin >> goods_num;
+        for (size_t i = 0; i < goods_num; ++i)
         {
-            if (symb >= '0' and symb <= '9')
-            {
-                quantity = symb - '0';
-            }
-            else if (symb == ',')
-            {
-                for (size_t i = 0; i < arr_products.size(); ++i)
+            std::cout << "Input product: ";
+            std::string good;
+            std::cin >> good;
+            std::cout << "Input quantity of this product: ";
+            int quantity;
+            std::cin >> quantity;
+            temp_quantity.push_back(quantity);
+            for (size_t j = 0; j < arr_products.size(); ++j)
                 {
-                    if (arr_products[i]->m_name == good)
+                    if (arr_products[j]->m_name == good)
                     {
-                        temp_products.push_back(arr_products[i]);
-                        temp_quantity.push_back(quantity);
-                        quantity = 0;
-                        good = {};
+                        temp_products.push_back(arr_products[j]);
                     }
                 }
-            }
-            else
-            {
-                good.push_back(symb);
-            }
-            for (size_t i = 0; i < arr_products.size(); ++i)
-            {
-                if ((arr_products[i]->m_name) == good)
-                    temp_products.push_back(arr_products[i]);
-            }
         }
-
         arr_customers[customer_index]->bought(temp_products, temp_quantity);
+        temp_products.clear();
+        temp_quantity.clear();
         name.clear();
     }
 
