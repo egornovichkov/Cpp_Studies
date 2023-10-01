@@ -24,6 +24,6 @@ int main()
     std::cout << "\n";
     std::sort(arr.begin(), arr.end(), [](int a, int b)
               { return a < b; });
-    for (auto i : arr)
+    for (const auto &i : arr)
         std::cout << i << " ";
 }
