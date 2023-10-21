@@ -94,7 +94,6 @@ std::istream &operator>>(std::istream &in, Fraction &rhs)
     return in;
 }
 
-
 bool Fraction::operator==(Fraction &rhs)
 {
     if ((*this - rhs).m_nominator == 0)

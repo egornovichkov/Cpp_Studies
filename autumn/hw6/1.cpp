@@ -274,12 +274,17 @@ int main()
     {
         test_obj[i] = i;
     }
-    std::cout << "test_obj:\n" << test_obj;
+    std::cout << "test_obj:\n"
+              << test_obj;
     Agregate obj1(test_obj);
-    std::cout << "obj1:\n" << obj1;
+    std::cout << "obj1:\n"
+              << obj1;
     Agregate obj2(std::move(test_obj));
-    std::cout << "obj2:" << "\n" << obj2;
-    std::cout << "test_obj is empty:\n" << test_obj << "\n";
+    std::cout << "obj2:"
+              << "\n"
+              << obj2;
+    std::cout << "test_obj is empty:\n"
+              << test_obj << "\n";
     Agregate test_obj2;
     for (size_t i = 0; i < 20; i++)
     {
