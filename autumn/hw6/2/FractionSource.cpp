@@ -79,6 +79,22 @@ std::ostream &operator<<(std::ostream &out, Fraction &rhs)
     return out;
 }
 
+std::istream &operator>>(std::istream &in, Fraction &rhs)
+{
+    bool input_sign;
+    int nominator;
+    int denominator;
+    std::cout << "\nInput sign (0 is minus, 1 is plus): ";
+    in >> input_sign;
+    std::cout << "Input nominator: ";
+    in >> nominator;
+    std::cout << "Input denominator: ";
+    in >> denominator;
+    rhs = Fraction(static_cast<sign>(input_sign), nominator, denominator);
+    return in;
+}
+
+
 bool Fraction::operator==(Fraction &rhs)
 {
     if ((*this - rhs).m_nominator == 0)
