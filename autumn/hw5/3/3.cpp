@@ -4,7 +4,6 @@
 class A
 {
 
-    friend void func();
     friend class B;
 
 private:
@@ -13,6 +12,8 @@ private:
     {
         std::string m_secret = "Secret data!";
     };
+    
+    friend void func(A &, A::Secret &);
 };
 
 class B
