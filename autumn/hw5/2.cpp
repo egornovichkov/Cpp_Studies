@@ -7,15 +7,11 @@ enum class convert_emum
     CGS = 1
 };
 
-const double charge_const = 2997924580;
-const double mass_const = 1000;
-const double diametr_const = 100;
-
 class ElementaryParticle
 {
 
 public:
-    ElementaryParticle(std::string name,
+    ElementaryParticle(const std::string& name,
                        double electric_charge,
                        double mass,
                        double spin,
@@ -28,19 +24,19 @@ public:
 
     ~ElementaryParticle() { std::cout << "...Deconstructing card for " << m_name << "\n"; }
 
-    std::string GetName(convert_emum type);
-    double GetCharge(convert_emum type);
-    double GetMass(convert_emum type);
-    double GetSpin(convert_emum type);
-    double GetDiametr(convert_emum type);
-    double GetLifetime(convert_emum type);
+    std::string& GetName(convert_emum);
+    double GetCharge(convert_emum);
+    double GetMass(convert_emum);
+    double GetSpin(convert_emum);
+    double GetDiametr(convert_emum);
+    double GetLifetime(convert_emum);
 
-    void SetName(std::string name, convert_emum type);
-    void SetCharge(double electric_charge, convert_emum type);
-    void SetMass(double mass, convert_emum type);
-    void SetSpin(double spin, convert_emum type);
-    void SetDiametr(double diametr, convert_emum type);
-    void SetLifetime(double lifetime, convert_emum type);
+    void SetName(const std::string &, convert_emum);
+    void SetCharge(double, convert_emum);
+    void SetMass(double, convert_emum);
+    void SetSpin(double, convert_emum);
+    void SetDiametr(double, convert_emum);
+    void SetLifetime(double, convert_emum);
 
 private:
     std::string m_name;
@@ -49,11 +45,14 @@ private:
     double m_spin;
     double m_diametr;
     double m_lifetime;
+    const double m_charge_const = 2997924580;
+    const double m_mass_const = 1000;
+    const double m_diametr_const = 100;
     convert_emum m_units_system;
 };
 
 // Определение геттеров
-std::string ElementaryParticle::GetName(convert_emum type)
+std::string& ElementaryParticle::GetName(convert_emum type)
 {
     return m_name;
 }
@@ -62,18 +61,18 @@ double ElementaryParticle::GetCharge(convert_emum type)
     if (type == m_units_system)
         return m_electric_charge;
     else if (type == convert_emum::SI)
-        return m_electric_charge / charge_const;
+        return m_electric_charge / m_charge_const;
     else
-        return m_electric_charge * charge_const;
+        return m_electric_charge * m_charge_const;
 }
 double ElementaryParticle::GetMass(convert_emum type)
 {
     if (type == m_units_system)
         return m_mass;
     else if (type == convert_emum::SI)
-        return m_mass / mass_const;
+        return m_mass / m_mass_const;
     else
-        return m_mass * mass_const;
+        return m_mass * m_mass_const;
 }
 double ElementaryParticle::GetSpin(convert_emum type)
 {
@@ -84,9 +83,9 @@ double ElementaryParticle::GetDiametr(convert_emum type)
     if (type == m_units_system)
         return m_diametr;
     else if (type == convert_emum::SI)
-        return m_diametr / diametr_const;
+        return m_diametr / m_diametr_const;
     else
-        return m_diametr * diametr_const;
+        return m_diametr * m_diametr_const;
 }
 double ElementaryParticle::GetLifetime(convert_emum type)
 {
@@ -94,7 +93,7 @@ double ElementaryParticle::GetLifetime(convert_emum type)
 }
 
 // Определение сеттеров
-void ElementaryParticle::SetName(std::string name, convert_emum type)
+void ElementaryParticle::SetName(const std::string &name, convert_emum type)
 {
     m_name = name;
 }
@@ -103,18 +102,18 @@ void ElementaryParticle::SetCharge(double electric_charge, convert_emum type)
     if (type == m_units_system)
         m_electric_charge = electric_charge;
     else if (type == convert_emum::SI)
-        m_electric_charge = electric_charge * charge_const;
+        m_electric_charge = electric_charge * m_charge_const;
     else
-        m_electric_charge = electric_charge / charge_const;
+        m_electric_charge = electric_charge / m_charge_const;
 }
 void ElementaryParticle::SetMass(double mass, convert_emum type)
 {
     if (type == m_units_system)
         m_mass = mass;
     else if (type == convert_emum::SI)
-        m_mass = mass * mass_const;
+        m_mass = mass * m_mass_const;
     else
-        m_mass = mass / mass_const;
+        m_mass = mass / m_mass_const;
 }
 void ElementaryParticle::SetSpin(double spin, convert_emum type)
 {
@@ -125,9 +124,9 @@ void ElementaryParticle::SetDiametr(double diametr, convert_emum type)
     if (type == m_units_system)
         m_diametr = diametr;
     else if (type == convert_emum::SI)
-        m_diametr = diametr * diametr_const;
+        m_diametr = diametr * m_diametr_const;
     else
-        m_diametr = diametr / diametr_const;
+        m_diametr = diametr / m_diametr_const;
 }
 void ElementaryParticle::SetLifetime(double lifetime, convert_emum type)
 {

@@ -2,7 +2,7 @@
 #include <iostream>
 #include "CelestialBody.hpp"
 
-CelestialBody::CelestialBody(std::string &&name, std::string &&type, double radius, double mass, double surface_temp, bool islife)
+CelestialBody::CelestialBody(const std::string &name, const std::string &type, double radius, double mass, double surface_temp, bool islife)
     : m_name(name),
       m_type(type),
       m_radius(radius),
@@ -55,12 +55,12 @@ bool CelestialBody::get_islife()
     return m_islife;
 }
 
-void CelestialBody::set_name(std::string &&name)
+void CelestialBody::set_name(const std::string &name)
 {
     m_name = name;
 }
 
-void CelestialBody::set_type(std::string &&type)
+void CelestialBody::set_type(const std::string &type)
 {
     m_type = type;
 }

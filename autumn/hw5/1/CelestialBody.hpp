@@ -5,8 +5,8 @@ class CelestialBody
 {
 
 public:
-    CelestialBody(std::string &&name = "Earth",
-                  std::string &&type = "Planet",
+    CelestialBody(const std::string &name = "Earth",
+                  const std::string &type = "Planet",
                   double radius = 6371,
                   double mass = 5.9722e24,
                   double surface_temp = 12,
@@ -21,8 +21,8 @@ public:
     double get_surface_temp();
     bool get_islife();
 
-    void set_name(std::string &&);
-    void set_type(std::string &&);
+    void set_name(const std::string &);
+    void set_type(const std::string &);
     void set_radius(double);
     void set_mass(double);
     void set_surface_temp(double);
