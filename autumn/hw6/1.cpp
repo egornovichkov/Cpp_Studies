@@ -24,6 +24,9 @@ public:
         }
     }
 
+    Agregate(size_t size1, size_t size2, int *arr1, int *arr2, const std::string &str)
+        : m_size1(size1), m_size2(size2), m_ptr1(arr1), m_ptr2(arr2), m_string(m_string) {}
+
     Agregate(const Agregate &other) : m_size1(0), m_size2(0), m_ptr1(nullptr), m_ptr2(nullptr), m_string("")
     {
 
@@ -53,6 +56,34 @@ public:
         }
 
         m_string = other.m_string;
+    }
+
+    Agregate(Agregate &&other) : m_size1(0), m_size2(0), m_ptr1(nullptr), m_ptr2(nullptr), m_string("")
+    {
+        std::cout << "Agregate(Agregate&&)\n";
+
+        if (&other == this)
+        {
+            return;
+        }
+
+        if (!other.is_empty1())
+        {
+            m_size1 = other.m_size1;
+            m_ptr1 = other.m_ptr1;
+            other.m_ptr1 = nullptr;
+            other.m_size1 = 0;
+        }
+
+        if (!other.is_empty2())
+        {
+            m_size2 = other.m_size2;
+            m_ptr2 = other.m_ptr2;
+            other.m_ptr2 = nullptr;
+            other.m_size2 = 0;
+        }
+
+        m_string = std::move(other.m_string);
     }
 
     Agregate &operator=(const Agregate &other)
@@ -98,34 +129,6 @@ public:
 
         m_string = other.m_string;
         return *this;
-    }
-
-    Agregate(Agregate &&other) : m_size1(0), m_size2(0), m_ptr1(nullptr), m_ptr2(nullptr), m_string("")
-    {
-        std::cout << "Agregate(Agregate&&)\n";
-
-        if (&other == this)
-        {
-            return;
-        }
-
-        if (!other.is_empty1())
-        {
-            m_size1 = other.m_size1;
-            m_ptr1 = other.m_ptr1;
-            other.m_ptr1 = nullptr;
-            other.m_size1 = 0;
-        }
-
-        if (!other.is_empty2())
-        {
-            m_size2 = other.m_size2;
-            m_ptr2 = other.m_ptr2;
-            other.m_ptr2 = nullptr;
-            other.m_size2 = 0;
-        }
-
-        m_string = std::move(other.m_string);
     }
 
     Agregate &operator=(Agregate &&other)
