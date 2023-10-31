@@ -1,5 +1,4 @@
 #include "../hpp/Rectangle.hpp"
-#include "../hpp/Polygon.hpp"
 #include <iostream>
 
 double Rectangle::perimetr()
@@ -12,11 +11,10 @@ double Rectangle::square()
     return m_length*m_width;
 }
 
-std::ostream& Rectangle::print() const
+std::string Rectangle::print() const
 {
-    std::streambuf * buf = std::cout.rdbuf();
-    std::ostream out(buf);
-    out << "Length: " << m_length;
-    out << "Width: " << m_width;
+    std::string length = std::to_string(m_length);
+    std::string width = std::to_string(m_width);
+    std::string out = "Length: " + length + "\n" + "Width: " + width + "\n";
     return out;
 }

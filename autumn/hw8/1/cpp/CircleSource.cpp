@@ -1,6 +1,4 @@
-#include "../hpp/Ellipse.hpp"
 #include "../hpp/Circle.hpp"
-#include <iostream>
 
 double Circle::perimetr()
 {
@@ -12,10 +10,9 @@ double Circle::square()
     return pi*m_axis1*m_axis1;
 }
 
-std::ostream& Circle::print() const
+std::string Circle::print() const
 {
-    std::streambuf * buf = std::cout.rdbuf();
-    std::ostream out(buf);
-    out << "Radius: " << m_axis1;
+    std::string axis1 = std::to_string(m_axis1);
+    std::string out = "Radius: " + axis1 +"\n";
     return out;
 }

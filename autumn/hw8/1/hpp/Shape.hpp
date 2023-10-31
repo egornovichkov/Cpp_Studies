@@ -1,6 +1,7 @@
-#include <iostream>
+#ifndef SHAPE_H
+#define SHAPE_H
+#include "Abstract_Base.hpp"
 
-class Abstract_Base;
 
 class Shape : public Abstract_Base
 {
@@ -10,8 +11,9 @@ class Shape : public Abstract_Base
 public:
     virtual double perimetr() = 0;
     virtual double square() = 0;
-    virtual ~Shape();
+    virtual ~Shape(){};
 protected:
-    virtual std::ostream& print() const = 0;
+    virtual std::string print() const = 0;
     virtual double validate(double) final;
 };
+#endif

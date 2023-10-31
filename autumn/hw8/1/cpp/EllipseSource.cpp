@@ -1,10 +1,9 @@
-#include "../hpp/Shape.hpp"
 #include "../hpp/Ellipse.hpp"
 #include <iostream>
 
 double Ellipse::perimetr()
 {
-    return 4 * (pi * m_axis1 * m_axis2 + (m_axis1 - m_axis2)*(m_axis1 - m_axis2)) / (m_axis1 + m_axis2);
+    return 4 * (pi * m_axis1 * m_axis2 + (m_axis1 - m_axis2) * (m_axis1 - m_axis2)) / (m_axis1 + m_axis2);
 }
 
 double Ellipse::square()
@@ -12,12 +11,10 @@ double Ellipse::square()
     return pi * m_axis1 * m_axis2;
 }
 
-std::ostream& Ellipse::print() const
+std::string Ellipse::print() const
 {
-    std::streambuf * buf = std::cout.rdbuf();
-    std::ostream out(buf);
-    out << "First half-axis: " << m_axis1;
-    out << "Second half-axis: " << m_axis2;
+    std::string axis1 = std::to_string(m_axis1);
+    std::string axis2 = std::to_string(m_axis2);
+    std::string out = "First half-axis: " + axis1 + "\n" + "Second half-axis: " + axis2 + "\n";
     return out;
 }
-

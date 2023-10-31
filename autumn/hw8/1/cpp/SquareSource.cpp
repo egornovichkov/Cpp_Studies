@@ -1,11 +1,9 @@
-#include "../hpp/Rectangle.hpp"
 #include "../hpp/Square.hpp"
 #include <iostream>
 
-std::ostream& Square::print() const 
+std::string Square::print() const 
 {
-    std::streambuf * buf = std::cout.rdbuf();
-    std::ostream out(buf);
-    out << "Side: " << m_length;
+    std::string length = std::to_string(m_length);
+    std::string out = "Side: " + length + "\n";
     return out;
 }

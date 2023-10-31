@@ -1,4 +1,6 @@
-#include <iostream>
+#ifndef RECTANGLE_H
+#define RECTANGLE_H
+#include "Polygon.hpp"
 
 class Rectangle : public Polygon
 {
@@ -9,10 +11,11 @@ public:
     virtual double perimetr() final;
     virtual double square() final;
 
-    virtual ~Rectangle();
+    virtual ~Rectangle(){};
 
 protected:
-    virtual std::ostream& print() const override;
+    virtual std::string print() const override;
     double m_length;
     double m_width;
 };
+#endif

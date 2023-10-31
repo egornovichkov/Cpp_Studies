@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include "./hpp/Abstract_Base.hpp"
 #include "./hpp/Shape.hpp"
 #include "./hpp/Polygon.hpp"
@@ -10,9 +11,19 @@
 
 int main()
 {
-    // Ellipse e(1, 2);
-    // std::cout << e;
-    // std::cout << e.perimetr();
-    // std::cout << e.square();
+    Shape *e = new Ellipse(1, 2);
+    Shape *c = new Circle(5);
+    Shape *r = new Rectangle(2, 4);
+    Shape *s = new Square(7);
+    Shape *t = new Triangle(3, 4, 5);
+
+    std::vector<Shape *> v {e, c, r, s, t};
+    for (auto &elem : v)
+    {
+        std::cout << *elem;
+        std::cout << "Perimetr: "<< elem->perimetr() << "\n";
+        std::cout << "Square: " << elem->square() << "\n";
+    }
+
     return 0;
 }

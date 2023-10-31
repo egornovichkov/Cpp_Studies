@@ -1,4 +1,3 @@
-#include "../hpp/Shape.hpp"
 #include "../hpp/Triangle.hpp"
 #include <iostream>
 #include <cmath>
@@ -34,15 +33,14 @@ double Triangle::perimetr()
 double Triangle::square()
 {
     return std::sqrt((m_side1 + m_side2 + m_side3) * (m_side1 + m_side2 - m_side3) *
-                     (m_side1 + m_side3 - m_side2) * (m_side2 + m_side3 - m_side1));
+                     (m_side1 + m_side3 - m_side2) * (m_side2 + m_side3 - m_side1)) / 4;
 }
 
-std::ostream& Triangle::print() const
+std::string Triangle::print() const
 {
-    std::streambuf * buf = std::cout.rdbuf();
-    std::ostream out(buf);
-    out << "First side: " << m_side1;
-    out << "Second side: " << m_side2;
-    out << "Third side: " << m_side3;
+    std::string side1 = std::to_string(m_side1);
+    std::string side2 = std::to_string(m_side2);
+    std::string side3 = std::to_string(m_side3);
+    std::string out = "First side: " + side1 + "\n" + "Second side: " + side2 + "\n" + "Third side: " + side3 + "\n";
     return out;
 }
