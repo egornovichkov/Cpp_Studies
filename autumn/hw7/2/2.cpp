@@ -16,6 +16,8 @@ int main()
     auto frac7 = frac1 * frac2;
     std::cout << frac7;
     std::cout << frac4.get_denominator();
+    Fraction frac9(3, 8);
+    std::cout << "\n" << double(frac9);
     Fraction frac8;
     std::cin >> frac8;
     std::cout << frac8;

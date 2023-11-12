@@ -2,48 +2,27 @@
 #include <numeric>
 #include "Fraction.hpp"
 
-Fraction operator+(Fraction &frac1, Fraction &frac2)
+Fraction operator+(const Fraction &frac1, const Fraction &frac2)
 {
-    frac1.fraction_reduction();
-    frac2.fraction_reduction();
-    int frac1_nominator;
-    int frac2_nominator;
-    if (frac1.m_sign == sign::minus)
-        frac1_nominator = -frac1.m_nominator;
-    else
-        frac1_nominator = frac1.m_nominator;
-
-    if (frac2.m_sign == sign::minus)
-        frac2_nominator = -frac2.m_nominator;
-    else
-        frac2_nominator = frac2.m_nominator;
+    int frac1_nominator(frac1.get_signed_nominator());
+    int frac2_nominator(frac2.get_signed_nominator());
     int lcm = std::lcm(frac1.m_denominator, frac2.m_denominator);
     int nominator(frac1_nominator * (lcm / frac1.m_denominator) + frac2_nominator * (lcm / frac2.m_denominator));
     int denominator(lcm);
-
     return Fraction(nominator, denominator);
 }
 
-Fraction operator-(Fraction &frac1, Fraction &frac2)
+Fraction operator-(const Fraction &frac1, const Fraction &frac2)
 {
-    Fraction buf(frac2.sign_change(), frac2.m_nominator, frac2.m_denominator);
-    return frac1 + buf;
+
+    Fraction minus_one(-1, 1);
+    return frac1 + minus_one * frac2;
 }
 
-Fraction operator*(Fraction &frac1, Fraction &frac2)
+Fraction operator*(const Fraction &frac1, const Fraction &frac2)
 {
-    int frac1_nominator;
-    int frac2_nominator;
-    if (frac1.m_sign == sign::minus)
-        frac1_nominator = -frac1.m_nominator;
-    else
-        frac1_nominator = frac1.m_nominator;
-
-    if (frac2.m_sign == sign::minus)
-        frac2_nominator = -frac2.m_nominator;
-    else
-        frac2_nominator = frac2.m_nominator;
-
+    int frac1_nominator(frac1.get_signed_nominator());
+    int frac2_nominator(frac2.get_signed_nominator());
     int nominator(frac1_nominator * frac2_nominator);
     int denominator(frac1.m_denominator * frac2.m_denominator);
     Fraction result(nominator, denominator);
@@ -51,7 +30,7 @@ Fraction operator*(Fraction &frac1, Fraction &frac2)
     return result;
 }
 
-Fraction operator/(Fraction &frac1, Fraction &frac2)
+Fraction operator/(const Fraction &frac1, const Fraction &frac2)
 {
     if (frac2.m_nominator == 0)
     {
@@ -64,37 +43,35 @@ Fraction operator/(Fraction &frac1, Fraction &frac2)
     return result;
 }
 
-std::ostream &operator<<(std::ostream &out, Fraction &rhs)
+std::ostream &operator<<(std::ostream &out, const Fraction &rhs)
 {
     if (rhs.m_nominator == 0)
     {
         out << 0 << "\n";
         return out;
     }
-    rhs.fraction_reduction();
-    if (rhs.m_sign == sign::plus)
-        out << rhs.m_nominator << "/" << rhs.m_denominator << "\n";
-    else
-        out << "-" << rhs.m_nominator << "/" << rhs.m_denominator << "\n";
+    out << rhs.get_signed_nominator() << "/" << rhs.get_denominator() << "\n";
     return out;
 }
 
 std::istream &operator>>(std::istream &in, Fraction &rhs)
 {
-    bool input_sign;
     int nominator;
     int denominator;
-    std::cout << "\nInput sign (0 is minus, 1 is plus): ";
-    in >> input_sign;
-    std::cout << "Input nominator: ";
+    std::cout << "\nInput nominator: ";
     in >> nominator;
     std::cout << "Input denominator: ";
     in >> denominator;
-    rhs = Fraction(static_cast<sign>(input_sign), nominator, denominator);
+    rhs = Fraction(nominator, denominator);
     return in;
 }
 
-bool Fraction::operator==(Fraction &rhs)
+Fraction::operator double() const
+{
+    return double(this->get_signed_nominator()) / double(m_denominator);
+}
+
+bool Fraction::operator==(const Fraction &rhs)
 {
     if ((*this - rhs).m_nominator == 0)
     {
@@ -103,7 +80,7 @@ bool Fraction::operator==(Fraction &rhs)
     return 0;
 }
 
-bool Fraction::operator>(Fraction &rhs)
+bool Fraction::operator>(const Fraction &rhs)
 {
     if ((*this - rhs).m_sign == sign::minus || *this == rhs)
     {
@@ -112,31 +89,31 @@ bool Fraction::operator>(Fraction &rhs)
     return 1;
 }
 
-bool Fraction::operator<(Fraction &rhs)
+bool Fraction::operator<(const Fraction &rhs)
 {
-    if (this->operator>(rhs) || *this == rhs)
+    if (*this > rhs || *this == rhs)
     {
         return 0;
     }
     return 1;
 }
 
-bool Fraction::operator>=(Fraction &rhs)
+bool Fraction::operator>=(const Fraction &rhs)
 {
-    if ((*this - rhs).m_sign == sign::minus)
+    if (*this < rhs)
     {
         return 0;
     }
     return 1;
 }
 
-bool Fraction::operator<=(Fraction &rhs)
+bool Fraction::operator<=(const Fraction &rhs)
 {
-    if (this->operator<(rhs) || *this == rhs)
+    if (*this > rhs)
     {
-        return 1;
+        return 0;
     }
-    return 0;
+    return 1;
 }
 
 Fraction &Fraction::operator++()
@@ -153,40 +130,31 @@ Fraction &Fraction::operator--()
 
 Fraction Fraction::operator++(int)
 {
-    Fraction temp(m_sign, m_nominator, m_denominator);
+    Fraction temp(this->get_signed_nominator(), m_denominator);
     ++(*this);
     return temp;
 }
 
 Fraction Fraction::operator--(int)
 {
-    Fraction temp(m_sign, m_nominator, m_denominator);
+    Fraction temp(this->get_signed_nominator(), m_denominator);
     --(*this);
     return temp;
 }
 
-const unsigned int &Fraction::get_nominator()
+const unsigned int &Fraction::get_nominator() const
 {
     return this->m_nominator;
 }
 
-const unsigned int &Fraction::get_denominator()
+const unsigned int &Fraction::get_denominator() const
 {
     return this->m_denominator;
 }
 
-const sign &Fraction::get_sign()
+const sign &Fraction::get_sign() const
 {
     return this->m_sign;
-}
-
-double Fraction::decimal_fraction()
-{
-    if (m_sign == sign::minus)
-    {
-        return -m_nominator / m_denominator;
-    }
-    return m_nominator / m_denominator;
 }
 
 void Fraction::fraction_reduction()
@@ -197,9 +165,18 @@ void Fraction::fraction_reduction()
     m_denominator = denominator;
 }
 
-sign Fraction::sign_change()
+sign Fraction::get_inverted_sign() const
 {
     return static_cast<sign>((!static_cast<bool>(this->m_sign)));
+}
+
+int Fraction::get_signed_nominator() const
+{
+    if (m_sign == sign::minus)
+    {
+        return -m_nominator;
+    }
+    return m_nominator;
 }
 
 unsigned int Fraction::validate_nominator(int x)
@@ -210,7 +187,7 @@ unsigned int Fraction::validate_nominator(int x)
     }
     else
     {
-        m_sign = this->sign_change();
+        m_sign = this->get_inverted_sign();
         return (-x);
     }
 }
@@ -226,6 +203,6 @@ unsigned int Fraction::validate_denominator(int x)
         std::cout << "Denominator can not be equal to 0";
         exit;
     }
-    m_sign = this->sign_change();
+    m_sign = this->get_inverted_sign();
     return (-x);
 }

@@ -1,5 +1,7 @@
 #include <iostream>
 #include <numeric>
+#pragma once
+
 enum class sign
 {
     minus = 0,
@@ -9,52 +11,59 @@ enum class sign
 class Fraction
 {
 public:
-    friend Fraction operator+(Fraction &, Fraction &);
-    friend Fraction operator-(Fraction &, Fraction &);
-    friend Fraction operator*(Fraction &, Fraction &);
-    friend Fraction operator/(Fraction &, Fraction &);
+    friend Fraction operator+(const Fraction &, const Fraction &);
+    friend Fraction operator-(const Fraction &, const Fraction &);
+    friend Fraction operator*(const Fraction &, const Fraction &);
+    friend Fraction operator/(const Fraction &, const Fraction &);
 
-    friend std::ostream &operator<<(std::ostream &, Fraction &);
+    friend std::ostream &operator<<(std::ostream &, const Fraction &);
     friend std::istream &operator>>(std::istream &, Fraction &);
 
     // Написанные конструкторы позволяют свободно пользоваться отрицательными числами в инициализации объектов класса благодаря валидаторам, которые
     // меняют знак дроби (m_sign) если видят в числителе или знаменателе отриц. число. Именно благодаря валидаторам я не пользовался explicit конструкторами.
     Fraction(int nominator, int denominator)
-        : m_sign(sign::plus), m_nominator(validate_nominator(nominator)), m_denominator(validate_denominator(denominator)) {}
+        : m_sign(sign::plus), m_nominator(validate_nominator(nominator)), m_denominator(validate_denominator(denominator)) 
+    {
+        this->fraction_reduction();
+    }
 
-    // Этот конструктор позволяет явно указать знак перед дробью и также валидирует значения корректным образом. На самом деле бесполезен.
-    Fraction(sign sign, int nominator, int denominator)
-        : m_sign(sign), m_nominator(validate_nominator(nominator)), m_denominator(validate_denominator(denominator)) {}
+    // UPD: Конструктор с 3 аргументами я скрыл от пользователя, перенеся в private, т.к. он действительно вносил путанницу. Теперь знак дроби можно задать,
+    // передавая в конструктор отрицтательные числитель и/или знаменатель.
 
     Fraction()
         : m_sign(sign::plus), m_nominator(0), m_denominator(1) {}
 
-    bool operator==(Fraction &);
-    bool operator>(Fraction &);
-    bool operator<(Fraction &);
-    bool operator>=(Fraction &);
-    bool operator<=(Fraction &);
+    operator double() const;
+
+    bool operator==(const Fraction &);
+    bool operator>(const Fraction &);
+    bool operator<(const Fraction &);
+    bool operator>=(const Fraction &);
+    bool operator<=(const Fraction &);
 
     Fraction &operator++();
     Fraction &operator--();
     Fraction operator++(int);
     Fraction operator--(int);
 
-    const unsigned int &get_nominator();
-    const unsigned int &get_denominator();
-    const sign &get_sign();
-
-    double decimal_fraction();
+    const unsigned int &get_nominator() const;
+    const unsigned int &get_denominator() const;
+    const sign &get_sign() const;
 
 private:
     void fraction_reduction();
-    sign sign_change();
+
+    // Метод возвращает инвертированный знак дроби
+    sign get_inverted_sign() const;
+
+    // Метод возвращает числитель с учетом знака дроби
+    int get_signed_nominator() const;
 
     unsigned int validate_nominator(int);
 
     unsigned int validate_denominator(int);
 
-    sign m_sign;
-    unsigned int m_nominator;
-    unsigned int m_denominator;
+    mutable sign m_sign;
+    mutable unsigned int m_nominator;
+    mutable unsigned int m_denominator;
 };
