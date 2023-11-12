@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#pragma once
 
 class Agregate
 {
@@ -22,6 +23,8 @@ public:
     ~Agregate();
 
     int &operator[](size_t);
+
+    const int &operator[](size_t) const;
 
     bool is_empty1() const;
 

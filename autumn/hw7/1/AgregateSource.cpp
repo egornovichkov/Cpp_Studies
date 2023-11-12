@@ -175,20 +175,31 @@ Agregate::~Agregate()
 
     if (!this->is_empty1())
     {
-        m_size1 = 0;
         delete[] m_ptr1;
     }
 
     if (!this->is_empty2())
     {
-        m_size2 = 0;
         delete[] m_ptr2;
     }
-
-    m_string.clear();
 }
 
 int &Agregate::operator[](size_t index)
+{
+    if (index >= m_size1 + m_size2)
+    {
+        std::cout << "Out of range\n";
+        exit(2);
+    }
+    if (index < m_size1)
+    {
+        return m_ptr1[index];
+    }
+    else
+        return m_ptr2[index - m_size1];
+}
+
+const int &Agregate::operator[](size_t index) const
 {
     if (index >= m_size1 + m_size2)
     {
