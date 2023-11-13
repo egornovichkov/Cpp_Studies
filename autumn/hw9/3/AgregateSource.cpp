@@ -1,7 +1,9 @@
 #include <iostream>
 #include <string>
 #include "Agregate.hpp"
-#include "Exceptions.hpp"
+#include "Exceptions/agregate_logic_error.hpp"
+#include "Exceptions/agregate_out_of_range.hpp"
+#include "Exceptions/agregate_size_limit.hpp"
 
 Agregate::Agregate() : m_size1(10), m_size2(10), m_ptr1(nullptr), m_ptr2(nullptr), m_string("Default")
 {
@@ -21,8 +23,16 @@ Agregate::Agregate() : m_size1(10), m_size2(10), m_ptr1(nullptr), m_ptr2(nullptr
     }
 }
 
-Agregate::Agregate(size_t size1, size_t size2, int *arr1, int *arr2, const std::string &str)
-        : m_size1(size1), m_size2(size2), m_ptr1(arr1), m_ptr2(arr2), m_string(m_string) {}
+Agregate::Agregate(int size1, int size2, int *arr1, int *arr2, const std::string &str)
+try : m_size1(validate_size(size1)), m_size2(validate_size(size2)), m_ptr1(arr1), m_ptr2(arr2), m_string("")
+{
+    m_ptr1 = new int(m_size1);
+    m_ptr2 = new int(m_size2);
+}
+catch (const std::exception &e)
+{
+    std::cerr << e.what() << '\n';
+}
 
 Agregate::Agregate(const Agregate &other) : m_size1(0), m_size2(0), m_ptr1(nullptr), m_ptr2(nullptr), m_string("")
 {
@@ -173,31 +183,30 @@ Agregate &Agregate::operator=(Agregate &&other)
     return *this;
 }
 
-Agregate::~Agregate()
+Agregate::~Agregate() noexcept
 {
     std::cout << "~Agregate()\n";
 
     if (!this->is_empty1())
     {
-        m_size1 = 0;
         delete[] m_ptr1;
     }
 
     if (!this->is_empty2())
     {
-        m_size2 = 0;
         delete[] m_ptr2;
     }
-
-    m_string.clear();
 }
 
-int &Agregate::operator[](size_t index)
+int &Agregate::operator[](int index)
 {
-    if (index >= m_size1 + m_size2)
+    try
     {
-        std::cout << "Out of range\n";
-        exit(2);
+        validate_index(index, m_size1 + m_size2);
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << e.what() << '\n';
     }
     if (index < m_size1)
     {
@@ -207,23 +216,59 @@ int &Agregate::operator[](size_t index)
         return m_ptr2[index - m_size1];
 }
 
-bool Agregate::is_empty1() const
+const int &Agregate::operator[](int index) const
+{
+    try
+    {
+        validate_index(index, m_size1 + m_size2);
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    if (index < m_size1)
+    {
+        return m_ptr1[index];
+    }
+    else
+        return m_ptr2[index - m_size1];
+}
+
+bool Agregate::is_empty1() const noexcept
 {
     if (m_size1 == 0)
         return 1;
     return 0;
 }
 
-bool Agregate::is_empty2() const
+bool Agregate::is_empty2() const noexcept
 {
     if (m_size2 == 0)
         return 1;
     return 0;
 }
 
-void Agregate::set_string(const std::string &str)
+void Agregate::set_string(const std::string &str) noexcept
 {
     m_string = str;
+}
+
+size_t Agregate::validate_size(int size) const
+{
+    if (size < 0)
+        throw agregate_logic_error("Array size must be non-negative");
+    else if (size > 100)
+        throw agregate_size_limit();
+    return size;
+}
+
+size_t Agregate::validate_index(int index, size_t end) const
+{
+    if (index < 0)
+        throw agregate_logic_error("Array index must be non-negative");
+    else if (index >= end)
+        throw agregate_out_of_range();
+    return index;
 }
 
 std::ostream &operator<<(std::ostream &out, const Agregate &rhs)

@@ -1,5 +1,9 @@
 #include <iostream>
 #include <string>
+#include <array>
+#pragma once
+
+
 
 class Agregate
 {
@@ -8,7 +12,7 @@ public:
 
     Agregate();
 
-    Agregate(size_t, size_t, int *, int *, const std::string &);
+    Agregate(int, int, int *, int *, const std::string &a = "Default");
 
     Agregate(const Agregate &);
 
@@ -18,16 +22,20 @@ public:
 
     Agregate &operator=(Agregate &&);
 
-    ~Agregate();
+    ~Agregate() noexcept;
 
-    int &operator[](size_t);
+    int &operator[](int);
 
-    bool is_empty1() const;
+    const int &operator[](int) const;
 
-    bool is_empty2() const;
+    bool is_empty1() const noexcept;
 
-    void set_string(const std::string &);
+    bool is_empty2() const noexcept;
 
+    void set_string(const std::string &) noexcept;
+
+    size_t validate_size(int) const;
+    size_t validate_index(int, size_t) const;
 private:
     size_t m_size1;
     size_t m_size2;
