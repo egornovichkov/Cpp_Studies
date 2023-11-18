@@ -34,9 +34,9 @@ public:
 
     void set_string(const std::string &) noexcept;
 
-    size_t validate_size(int) const;
-    size_t validate_index(int, size_t) const;
 private:
+    size_t static validate_size(int);
+    size_t static validate_index(int, size_t);
     size_t m_size1;
     size_t m_size2;
     int *m_ptr1;

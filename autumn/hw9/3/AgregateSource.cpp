@@ -253,7 +253,7 @@ void Agregate::set_string(const std::string &str) noexcept
     m_string = str;
 }
 
-size_t Agregate::validate_size(int size) const
+size_t Agregate::validate_size(int size)
 {
     if (size < 0)
         throw agregate_logic_error("Array size must be non-negative");
@@ -262,7 +262,7 @@ size_t Agregate::validate_size(int size) const
     return size;
 }
 
-size_t Agregate::validate_index(int index, size_t end) const
+size_t Agregate::validate_index(int index, size_t end)
 {
     if (index < 0)
         throw agregate_logic_error("Array index must be non-negative");
