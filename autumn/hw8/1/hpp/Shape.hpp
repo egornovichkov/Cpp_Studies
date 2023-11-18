@@ -1,9 +1,9 @@
 #ifndef SHAPE_H
 #define SHAPE_H
-#include "Abstract_Base.hpp"
+#include <iostream>
+#include <string>
 
-
-class Shape : public Abstract_Base
+class Shape
 {
 
     friend std::ostream &operator<<(std::ostream &, Shape &);
@@ -14,6 +14,6 @@ public:
     virtual ~Shape(){};
 protected:
     virtual std::string print() const = 0;
-    virtual double validate(double) final;
+    static double validate(double);
 };
 #endif

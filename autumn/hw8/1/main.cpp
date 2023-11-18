@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include "./hpp/Abstract_Base.hpp"
 #include "./hpp/Shape.hpp"
 #include "./hpp/Polygon.hpp"
 #include "./hpp/Ellipse.hpp"
@@ -23,6 +22,7 @@ int main()
         std::cout << *elem;
         std::cout << "Perimetr: "<< elem->perimetr() << "\n";
         std::cout << "Square: " << elem->square() << "\n";
+        delete elem;
     }
 
     return 0;

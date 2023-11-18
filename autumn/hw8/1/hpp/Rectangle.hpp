@@ -5,7 +5,6 @@
 class Rectangle : public Polygon
 {
 public:
-    Rectangle() : m_length(0), m_width(0){}
     Rectangle(double length, double width) : m_length(validate(length)), m_width(validate(width)){}
 
     virtual double perimetr() final;

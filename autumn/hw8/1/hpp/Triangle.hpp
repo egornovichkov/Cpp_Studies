@@ -5,7 +5,6 @@
 class Triangle final : public Polygon
 {
 public:
-    Triangle() : m_side1(0), m_side2(0), m_side3(0) {}
     Triangle(double, double, double);
     virtual double perimetr() final;
     virtual double square() final;

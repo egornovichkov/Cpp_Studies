@@ -3,12 +3,12 @@
 
 double Ellipse::perimetr()
 {
-    return 4 * (pi * m_axis1 * m_axis2 + (m_axis1 - m_axis2) * (m_axis1 - m_axis2)) / (m_axis1 + m_axis2);
+    return 4 * (my_pi * m_axis1 * m_axis2 + (m_axis1 - m_axis2) * (m_axis1 - m_axis2)) / (m_axis1 + m_axis2);
 }
 
 double Ellipse::square()
 {
-    return pi * m_axis1 * m_axis2;
+    return my_pi * m_axis1 * m_axis2;
 }
 
 std::string Ellipse::print() const

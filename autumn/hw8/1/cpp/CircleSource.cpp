@@ -2,12 +2,7 @@
 
 double Circle::perimetr()
 {
-    return 2*pi*m_axis1;
-}
-
-double Circle::square()
-{
-    return pi*m_axis1*m_axis1;
+    return 2*my_pi*m_axis1;
 }
 
 std::string Circle::print() const
