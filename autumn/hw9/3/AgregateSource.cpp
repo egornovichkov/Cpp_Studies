@@ -203,17 +203,17 @@ int &Agregate::operator[](int index)
     try
     {
         validate_index(index, m_size1 + m_size2);
+        if (index < m_size1)
+        {
+            return m_ptr1[index];
+        }
+        else
+            return m_ptr2[index - m_size1];
     }
     catch (const std::exception &e)
     {
         std::cerr << e.what() << '\n';
     }
-    if (index < m_size1)
-    {
-        return m_ptr1[index];
-    }
-    else
-        return m_ptr2[index - m_size1];
 }
 
 const int &Agregate::operator[](int index) const
@@ -221,17 +221,17 @@ const int &Agregate::operator[](int index) const
     try
     {
         validate_index(index, m_size1 + m_size2);
+        if (index < m_size1)
+        {
+            return m_ptr1[index];
+        }
+        else
+            return m_ptr2[index - m_size1];
     }
     catch (const std::exception &e)
     {
         std::cerr << e.what() << '\n';
     }
-    if (index < m_size1)
-    {
-        return m_ptr1[index];
-    }
-    else
-        return m_ptr2[index - m_size1];
 }
 
 bool Agregate::is_empty1() const noexcept
