@@ -1,6 +1,6 @@
+#pragma once
 #include <stdexcept>
 #include <string>
-#pragma once
 
 class agregate_out_of_range : public std::exception
 {

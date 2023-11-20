@@ -1,6 +1,6 @@
+#pragma once
 #include <stdexcept>
 #include <string>
-#pragma once
 
 class agregate_size_limit : public std::exception
 {
