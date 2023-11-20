@@ -1,4 +1,6 @@
 #include "DynArr.hpp"
+#include "Exceptions/logic_error.hpp"
+#include "Exceptions/out_of_range.hpp"
 
 template <typename T>
 DynArr<T>::DynArr()
@@ -8,7 +10,7 @@ DynArr<T>::DynArr()
 }
 
 template <typename T>
-DynArr<T>::DynArr(T *arr, size_t size) : m_arr(arr), m_size(validate_size(size)){};
+DynArr<T>::DynArr(T *arr, size_t size) : m_arr(arr), m_size(size){};
 
 template <typename T>
 DynArr<T>::DynArr(const DynArr &other)
@@ -123,8 +125,8 @@ DynArr<T> &DynArr<T>::operator=(DynArr &&other)
 template <typename T>
 DynArr<T>::~DynArr() noexcept
 {
-    delete[](m_arr);
-    delete[](m_arr_backup);
+    delete[] (m_arr);
+    delete[] (m_arr_backup);
     m_size = 0;
 }
 
@@ -163,20 +165,80 @@ void DynArr<T>::resize(int size)
     {
         validate_size(size);
         if (size > m_size)
+        {
+            m_arr_backup = m_arr;
+            m_arr = new T[size];
+            for (size_t i = 0; i < m_size; i++)
+            {
+                m_arr[i] = m_arr_backup[i];
+            }
+            m_arr_backup = new T[size];
+            for (size_t i = 0; i < m_size; i++)
+            {
+                m_arr_backup[i] = m_arr[i];
+            }
+            m_size = size;
+        }
+        m_arr_backup = m_arr;
+        m_arr = new T[size];
+        for (size_t i = 0; i < size; i++)
+        {
+            m_arr[i] = m_arr_backup[i];
+        }
+        m_size = size;
     }
-    catch(const std::exception& e)
+    catch (const std::exception &e)
     {
         std::cerr << e.what() << '\n';
     }
+}
+
+template <typename T>
+void DynArr<T>::push_back(T elem)
+{
+    ++m_size;
+    m_arr_backup = m_arr;
+    m_arr = new T[m_size];
+    for (size_t i = 0; i < m_size - 1; i++)
+    {
+        m_arr[i] = m_arr_backup[i];
+    }
+    m_arr[m_size - 1] = elem;
+}
+
+template <typename T>
+bool DynArr<T>::is_empty()
+{
+    if (m_size == 0)
+        return 1;
+    return 0;
+}
+
+template <typename T>
+size_t DynArr<T>::size(const DynArr &obj) const noexcept
+{
+    return m_size;
+}
+
+template <typename T>
+size_t DynArr<T>::validate_index(int index, size_t end)
+{
+    if (index < 0)
+    {
+        throw logic_error("Array index must be non-negative")
+    }
+    if (index >= end)
+    {
+        throw out_of_range();
+    }
+    return index;
+}
+
+template <typename T>
+void DynArr<T>::swap(const DynArr &first, const DynArr &second) noexcept
+{
+    first.m_arr_backup = second.m_arr;
+    second.m_arr_backup = first.m_arr
 
 }
 
-// void push_back(T);
-
-// size_t validate_index(int);
-
-// size_t validate_size(int);
-
-// void swap(const &DynArr, const &DynArr) noexcept;
-
-// size_t size(const &DynArr) const noexcept;

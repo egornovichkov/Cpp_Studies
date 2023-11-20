@@ -7,7 +7,7 @@ class DynArr
 public:
     DynArr();
 
-    DynArr(T *arr, size_t size) : m_arr(arr), m_arr_backup(arr), m_size(validate_size(size));
+    DynArr(T *arr, size_t size) : m_arr(arr), m_arr_backup(arr), m_size(size);
 
     DynArr(const DynArr &);
 
@@ -29,14 +29,13 @@ public:
 
     bool is_empty();
 
-private:
-    void swap(const &DynArr, const &DynArr) noexcept;
+    size_t size(const DynArr &) const noexcept;
 
-    size_t size(const &DynArr) const noexcept;
+    void swap(const DynArr &, const DynArr&) noexcept;
+
+private:
 
     size_t static validate_index(int, size_t);
-
-    size_t static validate_size(int);
 
     T *m_arr;
     T *m_arr_backup;
