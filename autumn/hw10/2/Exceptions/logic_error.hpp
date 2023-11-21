@@ -1,11 +1,10 @@
 #pragma once
 #include <stdexcept>
-#include <string>
 
-class agregate_logic_error : public std::exception
+class logic_error : public std::exception
 {
 public:
-    explicit agregate_logic_error(const char* msg) : m_msg(msg){}
+    explicit logic_error(const char* msg) : m_msg(msg){}
     virtual const char* what() const noexcept
 {
     if (m_msg != nullptr)
