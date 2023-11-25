@@ -17,6 +17,20 @@ int main()
     int *arr3{new int[5]{1, 2, 3, 4, 5}};
     int *arr4{new int[5]{6, 7, 8, 9, 10}};
     Agregate ag(5, 5, arr3, arr4);
-    ag[100];
-    ag[-3];
+    try
+    {
+        ag[100];
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    try
+    {
+        ag[-3];
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << e.what() << '\n';
+    }
 }

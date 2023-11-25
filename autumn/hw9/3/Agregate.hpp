@@ -16,7 +16,7 @@ public:
 
     Agregate(const Agregate &);
 
-    Agregate(Agregate &&);
+    Agregate(Agregate &&) noexcept;
 
     Agregate &operator=(const Agregate &);
 
@@ -32,7 +32,7 @@ public:
 
     bool is_empty2() const noexcept;
 
-    void set_string(const std::string &) noexcept;
+    void set_string(const std::string &);
 
 private:
     size_t static validate_size(int);
