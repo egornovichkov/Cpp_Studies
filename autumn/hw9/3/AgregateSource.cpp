@@ -12,6 +12,13 @@ Agregate::Agregate() : m_size1(10), m_size2(10), m_ptr1(nullptr), m_ptr2(nullptr
     try
     {
         m_ptr1 = new int[m_size1];
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    try
+    {
         m_ptr2 = new int[m_size2];
 
         for (size_t i = 0; i < m_size1; i++)
@@ -24,10 +31,13 @@ Agregate::Agregate() : m_size1(10), m_size2(10), m_ptr1(nullptr), m_ptr2(nullptr
             m_ptr2[i] = 0;
         }
     }
-    catch (const std::exception &e)
+    catch(const std::exception& e)
     {
+        if (m_ptr1 != nullptr)
+            delete[] m_ptr1;
         std::cerr << e.what() << '\n';
     }
+    
 }
 
 Agregate::Agregate(int size1, int size2, int *arr1, int *arr2, const std::string &str)
@@ -38,6 +48,8 @@ try : m_size1(validate_size(size1)), m_size2(validate_size(size2)), m_ptr1(arr1)
 }
 catch (const std::exception &e)
 {
+    if (m_ptr1 != nullptr)
+        delete[] m_ptr1;
     std::cerr << e.what() << '\n';
 }
 
@@ -77,6 +89,8 @@ Agregate::Agregate(const Agregate &other) : m_size1(0), m_size2(0), m_ptr1(nullp
     }
     catch (const std::exception &e)
     {
+        if (m_ptr1 != nullptr)
+            delete[] m_ptr1;
         std::cerr << e.what() << '\n';
     }
 }
@@ -159,6 +173,8 @@ Agregate &Agregate::operator=(const Agregate &other)
     }
     catch (const std::exception &e)
     {
+        if (m_ptr1 != nullptr)
+            delete[] m_ptr1;
         std::cerr << e.what() << '\n';
     }
 }
