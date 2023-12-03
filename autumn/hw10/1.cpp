@@ -3,7 +3,7 @@
 // Функция поиска my_find в динамическом массиве возвращает индекс элемента, равного заданному значению, если такого не встречается, возвращает -1
 // Есть возможность задать свой унарный/бинарный компаратор передав функцию или лямбда-функцию
 
-// Перегрузка шаблона функции для бинарных компараторов
+// Перегрузка шаблона функции для динамических массивов и бинарных компараторов
 template <typename T, typename Comp>
 int my_find(const T *arr, size_t size, T val, Comp comp)
 {
@@ -15,7 +15,7 @@ int my_find(const T *arr, size_t size, T val, Comp comp)
     return -1;
 }
 
-// Перегрузка шаблона функции для унарных компараторов (предикатов)
+// Перегрузка шаблона функции для динамических массивов и унарных компараторов (предикатов)
 template <typename T>
 int my_find(const T *arr, size_t size, T val, bool predicate(T))
 {
@@ -27,9 +27,45 @@ int my_find(const T *arr, size_t size, T val, bool predicate(T))
     return -1;
 }
 
-// Перегрузка шаблона функции для отсутсвующего компаратора
+// Перегрузка шаблона функции для динамических массивов и отсутсвующего компаратора
 template <typename T>
 int my_find(const T *arr, size_t size, T val)
+{
+    for (size_t i = 0; i < size; i++)
+    {
+        if (arr[i] == val)
+            return i;
+    }
+    return -1;
+}
+
+// Перегрузка шаблона функции для встроенных массивов и бинарных компараторов
+template <typename T, size_t size, typename Comp>
+int my_find(const T (&arr)[size], T val, Comp comp)
+{
+    for (size_t i = 0; i < size; i++)
+    {
+        if (comp(arr[i], val))
+            return i;
+    }
+    return -1;
+}
+
+// Перегрузка шаблона функции для встроенных массивов и унарных компараторов (предикатов)
+template <typename T, size_t size>
+int my_find(const T (&arr)[size], T val, bool predicate(T))
+{
+    for (size_t i = 0; i < size; i++)
+    {
+        if (predicate(arr[i]))
+            return i;
+    }
+    return -1;
+}
+
+// Перегрузка шаблона функции для встроенных массивов и отсутсвующего компаратора
+template <typename T, size_t size>
+int my_find(const T (&arr)[size], T val)
 {
     for (size_t i = 0; i < size; i++)
     {
@@ -54,12 +90,19 @@ int main()
     double *double_arr = new double[5]{1, 2, 3, 4, 5};
     const char *char_arr = new char[4]{'a', 'b', 'c', 'd'};
     int *int_arr = new int[4]{1, 1, 2, 1};
-    
+
     std::cout << my_find(double_arr, 5, 4.0, equal) << "\n";
     std::cout << my_find(double_arr, 5, 4.0, less_than_zero) << "\n";
     std::cout << my_find(char_arr, 4, 'b', [](char a, char b) { return a == b ? 1 : 0; }) << "\n";
     std::cout << my_find(int_arr, 4, 2, modular_2_equal) << "\n";
-    std::cout << my_find(int_arr, 4, 2);
+    std::cout << my_find(int_arr, 4, 2) << "\n\n";
+
+    // Демонстрация для встроенных массивов
+    int int_arr2[10]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    std::cout << my_find(int_arr2, 9, [](char a, char b) { return a == b ? 1 : 0; }) << "\n";
+    std::cout << my_find(int_arr2, 5, equal) << "\n";
+    std::cout << my_find(int_arr2, 1, modular_2_equal) << "\n";
+    std::cout << my_find(int_arr2, 7) << "\n";
 
     delete[] (double_arr);
     delete[] (char_arr);
