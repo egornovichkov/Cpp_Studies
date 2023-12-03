@@ -16,13 +16,13 @@ public:
 
     DynArr() noexcept;
 
-    DynArr(T *arr, size_t size) noexcept;
+    DynArr(T *arr, size_t size);
 
-    DynArr(const DynArr &) noexcept;
+    DynArr(const DynArr &);
 
     DynArr(DynArr &&) noexcept;
 
-    DynArr &operator=(const DynArr &) noexcept;
+    DynArr &operator=(const DynArr &);
 
     DynArr &operator=(DynArr &&) noexcept;
 

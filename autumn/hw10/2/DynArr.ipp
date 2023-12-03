@@ -5,44 +5,60 @@
 #include "Exceptions/out_of_range.hpp"
 
 template <typename T>
-DynArr<T>::DynArr() noexcept
+DynArr<T>::DynArr() noexcept : m_arr(nullptr), m_arr_backup(nullptr), m_size(0)
 {
     std::cout << "DynArr()\n";
-
-    m_arr = nullptr;
-    m_arr_backup = nullptr;
-    m_size = 0;
 }
 
 template <typename T>
-DynArr<T>::DynArr(T *arr, size_t size) noexcept : m_arr(arr), m_arr_backup(nullptr), m_size(size)
+DynArr<T>::DynArr(T *arr, size_t size) : m_arr(nullptr), m_arr_backup(nullptr), m_size(0)
 {
     std::cout << "DynArr(T *, size_t)\n";
 
-    this->backup();
+    try
+    {
+        m_arr = new T[size];
+        m_size = size;
+        for (size_t i = 0; i < m_size; i++)
+        {
+            m_arr[i] = arr[i];
+        }
+        this->backup();
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << e.what() << '\n';
+    }
 };
 
 template <typename T>
-DynArr<T>::DynArr(const DynArr &other) noexcept : m_arr(nullptr), m_arr_backup(nullptr), m_size(0)
+DynArr<T>::DynArr(const DynArr &other) : m_arr(nullptr), m_arr_backup(nullptr), m_size(0)
 {
     std::cout << "DynArr(const DynArr &)\n";
 
-    if (&other == this || other.is_empty())
+    try
     {
-        return;
-    }
-
-    if (!other.is_empty())
-    {
-        m_size = other.m_size;
-        m_arr = new T[m_size];
-        for (size_t i = 0; i < m_size; i++)
+        if (&other == this || other.is_empty())
         {
-            m_arr[i] = other.m_arr[i];
+            return;
         }
-    }
 
-    this->backup();
+        if (!other.is_empty())
+        {
+            m_arr = new T[other.m_size];
+            m_size = other.m_size;
+            for (size_t i = 0; i < m_size; i++)
+            {
+                m_arr[i] = other.m_arr[i];
+            }
+        }
+
+        this->backup();
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << e.what() << '\n';
+    }
 }
 
 template <typename T>
@@ -67,33 +83,40 @@ DynArr<T>::DynArr(DynArr &&other) noexcept : m_arr(nullptr), m_arr_backup(nullpt
 }
 
 template <typename T>
-DynArr<T> &DynArr<T>::operator=(const DynArr &other) noexcept
+DynArr<T> &DynArr<T>::operator=(const DynArr &other)
 {
     std::cout << "operator=(const DynArr&)\n";
 
-    if (&other == this)
+    try
     {
-        return *this;
-    }
-
-    if (!this->is_empty())
-    {
-        delete[] m_arr;
-        m_arr = nullptr;
-        m_size = 0;
-    }
-
-    if (!other.is_empty())
-    {
-        m_size = other.m_size;
-        m_arr = new T[m_size];
-        for (size_t i = 0; i < m_size; i++)
+        if (&other == this)
         {
-            m_arr[i] = other.m_arr[i];
+            return *this;
         }
-    }
 
-    this->backup();
+        if (!this->is_empty())
+        {
+            delete[] m_arr;
+            m_arr = nullptr;
+            m_size = 0;
+        }
+
+        if (!other.is_empty())
+        {
+            m_arr = new T[other.m_size];
+            m_size = other.m_size;
+            for (size_t i = 0; i < m_size; i++)
+            {
+                m_arr[i] = other.m_arr[i];
+            }
+        }
+
+        this->backup();
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << e.what() << '\n';
+    }
 
     return *this;
 }
@@ -272,26 +295,42 @@ void DynArr<T>::swap(DynArr &rhs) noexcept
 template <typename T>
 void DynArr<T>::backup() noexcept
 {
-    if (m_arr_backup != nullptr)
-        delete[] m_arr_backup;
-    m_arr_backup = new T[m_size];
-    for (size_t i = 0; i < m_size; i++)
+    try
     {
-        m_arr_backup[i] = m_arr[i];
+        if (m_arr_backup != nullptr)
+            delete[] m_arr_backup;
+        m_arr_backup = new T[m_size];
+        for (size_t i = 0; i < m_size; i++)
+        {
+            m_arr_backup[i] = m_arr[i];
+        }
+    }
+    catch (const std::exception &e)
+    {
+        std::cout << "Backup failed\n";
+        std::cerr << e.what() << '\n';
     }
 }
 
 template <typename T>
 void DynArr<T>::recovery_from_backup() noexcept
 {
-    if (this->is_empty())
-        return;
-    if (m_arr != nullptr)
-        delete[] m_arr;
-    m_arr = new T[m_size];
-    for (size_t i = 0; i < m_size; i++)
+    try
     {
-        m_arr[i] = m_arr_backup[i];
+        if (this->is_empty())
+            return;
+        if (m_arr != nullptr)
+            delete[] m_arr;
+        m_arr = new T[m_size];
+        for (size_t i = 0; i < m_size; i++)
+        {
+            m_arr[i] = m_arr_backup[i];
+        }
+    }
+    catch (const std::exception &e)
+    {
+        std::cout << "Recovery from backup failed\n";
+        std::cerr << e.what() << '\n';
     }
 }
 
