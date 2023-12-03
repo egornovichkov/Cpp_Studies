@@ -23,5 +23,4 @@ int main()
 {
     std::cout << my_strlen("asd", "sssssss", "d") << "\n";
     std::cout << my_strlen_recursive("asd", "sssssss", "d") << "\n"; 
-
 }
