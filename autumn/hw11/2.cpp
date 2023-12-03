@@ -4,6 +4,12 @@
 #include <vector>
 #include <tuple>
 
+// Знаю, что не обязательно было использовать шаблон псевдонима типа и шаблонную функцию сборки мусора, просто удивился от того какой крутой шаблоны
+// инструмент и поучился их применять
+
+template<typename T>
+using matrix = std::vector<std::vector<T>>;
+
 template <typename First, typename Second, typename... Args>
 std::pair<First *, Second *> get_pointers(Args... args)
 {
@@ -30,9 +36,9 @@ int main()
     std::cout << std::get<0>(*ptrs1.second) << " " << std::get<1>(*ptrs1.second) << "\n\n";
 
     // Функция создает пару указателей. Первый указывает на пару <char, int>, второй указывает на вектор из векторов из даблов (матрица из даблов),
-    // в конструктор вектора мы передаем уже созданную матрицу matrix
-    std::vector<std::vector<double>> matrix{{1.1, 2.1}, {3.1, 4.1}};
-    auto ptrs2 = get_pointers<std::pair<char, int>, std::vector<std::vector<double>>, std::vector<std::vector<double>>>(matrix);
+    // в конструктор вектора мы передаем уже созданную матрицу m
+    matrix<double> m{{1.1, 2.1}, {3.1, 4.1}};
+    auto ptrs2 = get_pointers<std::pair<char, int>, matrix<double>, matrix<double>>(m);
     ptrs2.first->first = 'b';
     ptrs2.first->second = 2;
     std::cout << ptrs2.first->first << " " << ptrs2.first->second << "\n";
