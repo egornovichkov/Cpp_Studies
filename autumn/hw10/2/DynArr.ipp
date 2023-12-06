@@ -186,6 +186,8 @@ void DynArr<T>::resize(size_t size)
             m_size = size;
             return;
         }
+        if (m_arr_backup)
+            delete[] m_arr_backup;
         m_arr_backup = m_arr;
         m_arr = nullptr;
         m_arr = new T[size];
@@ -208,6 +210,8 @@ void DynArr<T>::push_back(const T &elem)
 {
     try
     {
+        if (m_arr_backup)
+            delete[] m_arr_backup;
         m_arr_backup = m_arr;
         m_arr = new T[m_size + 1];
         ++m_size;
@@ -230,6 +234,8 @@ void DynArr<T>::pop_back()
 {
     try
     {
+        if (m_arr_backup)
+            delete[] m_arr_backup;
         m_arr_backup = m_arr;
         m_arr = new T[m_size - 1];
         --m_size;
