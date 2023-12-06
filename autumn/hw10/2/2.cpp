@@ -1,9 +1,5 @@
 #include <iostream>
 #include "DynArr.hpp"
-#define _CRTDBG_MAP_ALLOC
-#include <crtdbg.h>
-#define DBG_NEW new( _NORMAL_BLOCK , __FILE__ , __LINE__ )
-#define newDBG_NEW
 
 int main(int argc, char const *argv[])
 {
@@ -76,6 +72,4 @@ int main(int argc, char const *argv[])
 
     ArrInt5.clear();
     ArrInt5.pop_back();
-    int* a = new int[10];
-    _CrtDumpMemoryLeaks();
 }
