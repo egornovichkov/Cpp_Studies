@@ -183,6 +183,8 @@ void DynArr<T>::resize(size_t size)
         {
             m_arr = new T[size];
             m_arr_backup = new T[size];
+            m_size = size;
+            return;
         }
         m_arr_backup = m_arr;
         m_arr = nullptr;
@@ -260,8 +262,8 @@ template <typename T>
 bool DynArr<T>::is_empty() const noexcept
 {
     if (m_size == 0)
-        return 1;
-    return 0;
+        return true;
+    return false;
 }
 
 template <typename T>
@@ -297,7 +299,7 @@ void DynArr<T>::backup() noexcept
 {
     try
     {
-        if (m_arr_backup != nullptr)
+        if (m_arr_backup)
             delete[] m_arr_backup;
         m_arr_backup = new T[m_size];
         for (size_t i = 0; i < m_size; i++)
@@ -319,7 +321,7 @@ void DynArr<T>::recovery_from_backup() noexcept
     {
         if (this->is_empty())
             return;
-        if (m_arr != nullptr)
+        if (m_arr)
             delete[] m_arr;
         m_arr = new T[m_size];
         for (size_t i = 0; i < m_size; i++)
